@@ -4,7 +4,7 @@ INCLUDE =
 LIBS =
 
 EXEC = fat-fs
-SRC = main.cc
+SRC = disk.cc main.cc
 OFILES = ${SRC:.cc=.o}
 
 all: .depend $(OFILES)
@@ -21,6 +21,6 @@ depend: .depend
 
 .depend: $(SRC)
 	rm -f .depend
-	$(CC) -MM $(INCLUDE) $^ > .depend
+	$(CC) -MM $(CXXFLAGS) $(INCLUDE) $^ > .depend
 
-include .depend
+-include .depend
