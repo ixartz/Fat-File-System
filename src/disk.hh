@@ -4,9 +4,9 @@
 # include <string>
 # include <iostream>
 # include <fstream>
-# include <cstddef>
-# include <type_traits>
+# include <vector>
 # include <string.h>
+# include "partition.hh"
 
 class Disk
 {
@@ -24,30 +24,27 @@ public:
    */
   void print_mbr();
 private:
+  /**
+   * \brief Read all partitions
+   */
+  void read_mbr_partition_();
+
   /// The buffer of the input file
   char buffer_[512];
   /// Jump instruction to boot code
   unsigned char jmp_boot_[3];
+  /// OEM (original equipment manufacturer) identifier
+  unsigned char oem_identifier_[8];
+  /// The number of Byte per sector
+  unsigned char nb_Byte_sector_[2];
+
+  /// Partition vector
+  std::vector<Partition> partition_vect_;
 
   /// The name of the input file
   std::string filename_;
   /// The stream to read
   std::fstream file_;
 };
-
-/**
- * \brief Calculate the size of C-like array
- */
-template <typename A>
-typename std::enable_if<std::is_array<A>::value, size_t>::type
-SizeOfArray(const A& a);
-
-/**
- * \brief Print the content of C-like array
- */
-template <typename A, int Size>
-void PrintArray(const A (& array)[Size]);
-
-# include "disk.hxx"
 
 #endif /* !DISK_HH */

@@ -1,5 +1,5 @@
-#ifndef DISK_HXX
-# define DISK_HXX
+#ifndef TOOL_ARRAY_HXX
+# define TOOL_ARRAY_HXX
 
 template <typename A>
 typename std::enable_if<std::is_array<A>::value, size_t>::type
@@ -17,4 +17,4 @@ void PrintArray(const A (& array)[Size])
   printf("\n");
 }
 
-#endif /* !DISK_HXX */
+#endif /* !TOOL_ARRAY_HXX */
