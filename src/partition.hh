@@ -24,7 +24,8 @@ private:
   /// End of partition.
   unsigned char CHS_end_[3];
   /// Partition address (relative offset to the MBR)
-  unsigned char LBA_offset_[4];
+  unsigned char LBA_offset_array_[4];
+  unsigned int LBA_offset_ = 0;
   /// Number of sector
   unsigned char nb_sector_[4];
 };

@@ -14,7 +14,12 @@ Partition::Partition(char* p)
   */
 
   memcpy(CHS_end_, p + 5, SizeOfArray(CHS_end_));
-  memcpy(LBA_offset_, p + 8, SizeOfArray(LBA_offset_));
+  memcpy(LBA_offset_array_, p + 8, SizeOfArray(LBA_offset_array_));
+
+  /* Convert to unsigned int from little endian */
+  for (int i = 3; i >= 0; --i)
+    LBA_offset_ = (LBA_offset_ << 8) | LBA_offset_array_[i];
+
   memcpy(nb_sector_, p + 12, SizeOfArray(nb_sector_));
 }
 
@@ -29,8 +34,9 @@ void Partition::print()
   PrintArray(type_);
   std::cout << "End of partition in CHS: ";
   PrintArray(CHS_end_);
-  std::cout << "Relative LBA address";
-  PrintArray(LBA_offset_);
+  std::cout << "Relative LBA address: ";
+  std::cout << LBA_offset_ << " in hex: ";
+  PrintArray(LBA_offset_array_);
   std::cout << "Number of sector: ";
   PrintArray(nb_sector_);
 }

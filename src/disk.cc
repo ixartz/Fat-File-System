@@ -23,10 +23,13 @@ void Disk::read_mbr()
 void Disk::read_mbr_partition_()
 {
   char* partition_start = buffer_ + 0x1BE; /* 0x1BE = 446 */
+  Partition* p;
 
   for (int i = 0; i < 4; ++i)
   {
-    partition_vect_.push_back(Partition(partition_start + i * 0x10));
+    p = new Partition(partition_start + i * 0x10);
+
+    partition_vect_.push_back(p);
   }
 }
 
@@ -45,7 +48,7 @@ void Disk::print_mbr()
 
   for (auto it: partition_vect_)
   {
-    it.print();
+    it->print();
     std::cout << std::endl;
   }
 }

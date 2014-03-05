@@ -12,4 +12,5 @@
 *.la
 *.a
 
+src/fat-fs
 .depend

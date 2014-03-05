@@ -38,8 +38,9 @@ private:
   /// Number of Byte per sector.
   unsigned char nb_Byte_sector_[2];
 
+
   /// Partition vector.
-  std::vector<Partition> partition_vect_;
+  std::vector<Partition*> partition_vect_;
 
   /// Name of the input file.
   std::string filename_;
