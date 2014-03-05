@@ -15,7 +15,7 @@ public:
   Disk(char* path, char* filename);
 
   /**
-   * \brief Read FAT32 Master Boot Record (MBR) where LBA = 0
+   * \brief Read FAT32 Master Boot Record (MBR) where LBA = 0.
    */
   void read_mbr();
 
@@ -25,25 +25,25 @@ public:
   void print_mbr();
 private:
   /**
-   * \brief Read all partitions
+   * \brief Read all partitions.
    */
   void read_mbr_partition_();
 
-  /// The buffer of the input file
+  /// Buffer of the input file.
   char buffer_[512];
-  /// Jump instruction to boot code
+  /// Jump instruction to boot code.
   unsigned char jmp_boot_[3];
-  /// OEM (original equipment manufacturer) identifier
+  /// OEM (original equipment manufacturer) identifier.
   unsigned char oem_identifier_[8];
-  /// The number of Byte per sector
+  /// Number of Byte per sector.
   unsigned char nb_Byte_sector_[2];
 
-  /// Partition vector
+  /// Partition vector.
   std::vector<Partition> partition_vect_;
 
-  /// The name of the input file
+  /// Name of the input file.
   std::string filename_;
-  /// The stream to read
+  /// The stream to read.
   std::fstream file_;
 };
 

@@ -17,8 +17,16 @@ public:
   void print();
 private:
   unsigned char boot_flag_[1];
-  /// Beginning of partition
+  /// Beginning of partition.
   unsigned char CHS_begin_[3];
+  /// Type of the partition
+  unsigned char type_[1];
+  /// End of partition.
+  unsigned char CHS_end_[3];
+  /// Partition address (relative offset to the MBR)
+  unsigned char LBA_offset_[4];
+  /// Number of sector
+  unsigned char nb_sector_[4];
 };
 
 #endif /* !PARTITION_HH */

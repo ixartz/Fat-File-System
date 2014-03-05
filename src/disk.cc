@@ -33,12 +33,19 @@ void Disk::read_mbr_partition_()
 void Disk::print_mbr()
 {
   std::cout << "Print FAT disk header" << std::endl;
+  std::cout << "Jump instruction: ";
   PrintArray(jmp_boot_);
+
+  std::cout << "OEM identifier: ";
   PrintArray(oem_identifier_);
+
+  std::cout << "Number of Byte per sector: ";
   PrintArray(nb_Byte_sector_);
+  std::cout << std::endl;
 
   for (auto it: partition_vect_)
   {
     it.print();
+    std::cout << std::endl;
   }
 }
