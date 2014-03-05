@@ -1,6 +1,7 @@
 #ifndef TOOL_ARRAY_HH
 # define TOOL_ARRAY_HH
 
+# include <iostream>
 # include <cstddef>
 # include <type_traits>
 

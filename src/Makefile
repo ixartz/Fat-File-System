@@ -4,7 +4,7 @@ INCLUDE =
 LIBS =
 
 EXEC = fat-fs
-SRC = partition.cc disk.cc main.cc
+SRC = fat.cc partition.cc mbr.cc main.cc
 OFILES = ${SRC:.cc=.o}
 
 all: .depend $(OFILES)

@@ -1,13 +1,13 @@
-#include "disk.hh"
+#include "mbr.hh"
 
 int main(int argc, char* argv[])
 {
   if (argc > 1)
   {
     char* path = strcat(getenv("PWD"), "/");
-    Disk d(path, argv[1]);
-    d.read_mbr();
-    d.print_mbr();
+    Mbr d(path, argv[1]);
+    d.read();
+    d.print();
   }
   else
   {
