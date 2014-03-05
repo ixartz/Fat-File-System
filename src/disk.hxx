@@ -9,10 +9,12 @@ SizeOfArray(const A __attribute__((__unused__))& a)
 }
 
 template <typename A, int Size>
-void PrintArray(A const(& array)[Size])
+void PrintArray(const A (& array)[Size])
 {
   for(int i = 0; i < Size; i++)
-    std::cout << array[i];
+    printf("%02X", array[i]);
+
+  printf("\n");
 }
 
 #endif /* !DISK_HXX */
