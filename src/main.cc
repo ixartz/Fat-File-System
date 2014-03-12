@@ -1,11 +1,12 @@
-#include "mbr.hh"
+#include <string.h>
+#include "input.hh"
 
 int main(int argc, char* argv[])
 {
   if (argc > 1)
   {
     char* path = strcat(getenv("PWD"), "/");
-    Mbr d(path, argv[1]);
+    Input d(path, argv[1]);
     d.read();
     d.print();
   }

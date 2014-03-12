@@ -4,6 +4,7 @@
 # include <iostream>
 # include <string.h>
 # include "tool-array.hh"
+# include "fat.hh"
 
 class Partition
 {
@@ -15,19 +16,30 @@ public:
    * \brief Print partition information.
    */
   void print();
+
+  /**
+   * \brief Mount the file system.
+   */
+  void mount();
+
+  /// Return partition adress in LBA.
+  unsigned char get_LBA_offset();
 private:
   unsigned char boot_flag_[1];
   /// Beginning of partition.
   unsigned char CHS_begin_[3];
-  /// Type of the partition
+  /// Type of the partition.
   unsigned char type_[1];
   /// End of partition.
   unsigned char CHS_end_[3];
   /// Partition address (relative offset to the MBR)
   unsigned char LBA_offset_array_[4];
   unsigned int LBA_offset_ = 0;
-  /// Number of sector
+  /// Number of sector.
   unsigned char nb_sector_[4];
+
+  /// File system.
+  Fat* fs;
 };
 
 #endif /* !PARTITION_HH */

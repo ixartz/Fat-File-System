@@ -6,13 +6,6 @@ Partition::Partition(char* p)
   memcpy(CHS_begin_, p + 1, SizeOfArray(CHS_begin_));
   memcpy(type_, p + 4, SizeOfArray(type_));
 
-  /* Partitions up to 2047GB. */
-  //TODO
-  /*
-  if (type_[0] != 0x0B)
-    throw new std::Exception();
-  */
-
   memcpy(CHS_end_, p + 5, SizeOfArray(CHS_end_));
   memcpy(LBA_offset_array_, p + 8, SizeOfArray(LBA_offset_array_));
 
@@ -39,4 +32,18 @@ void Partition::print()
   PrintArray(LBA_offset_array_);
   std::cout << "Number of sector: ";
   PrintArray(nb_sector_);
+}
+
+void Partition::mount()
+{
+  if (type_[0] != 0x0B && LBA_offset_ > 0)
+  {
+    /* Fat32 partition. */
+    //fs = new Fat();
+  }
+}
+
+unsigned char Partition::get_LBA_offset()
+{
+  return LBA_offset_;
 }

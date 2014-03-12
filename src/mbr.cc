@@ -1,31 +1,19 @@
 #include "mbr.hh"
 
-Mbr::Mbr(char* path, char* filename)
-  : filename_(strcat(path, filename))
-  , file_(filename_, std::ios::binary | std::fstream::in)
+Mbr::Mbr(char* sector)
 {
-  if (!file_.is_open())
-  {
-    std::cerr << "Error while opening the file \"" << filename << "\"" << std::endl;
-  }
+  read_partition_(sector);
 }
 
-void Mbr::read()
+void Mbr::read_partition_(char* sector)
 {
-  file_.read(buffer_, SizeOfArray(buffer_));
-
-  read_partition_();
-}
-
-void Mbr::read_partition_()
-{
-  char* partition_start = buffer_ + 0x1BE; /* 0x1BE = 446 */
+  char* partition_start = sector + 0x1BE; /* 0x1BE = 446 */
   Partition* p;
 
+  /* By default, the MBR contains 4 partitions */
   for (int i = 0; i < 4; ++i)
   {
     p = new Partition(partition_start + i * 0x10);
-
     partition_vect_.push_back(p);
   }
 }
