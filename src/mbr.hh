@@ -19,6 +19,10 @@ public:
    * \brief Print the MBR information.
    */
   void print();
+
+  /// Return partition vector
+  std::vector<Partition*>& get_partition_vect();
+
 private:
   /**
    * \brief Read partition table.

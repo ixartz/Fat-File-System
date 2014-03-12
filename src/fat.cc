@@ -17,5 +17,4 @@ void Fat::print()
 
   std::cout << "Number of Byte per sector: ";
   PrintArray(nb_Byte_sector_);
-  std::cout << std::endl;
 }

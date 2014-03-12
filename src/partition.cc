@@ -16,6 +16,12 @@ Partition::Partition(char* p)
   memcpy(nb_sector_, p + 12, SizeOfArray(nb_sector_));
 }
 
+Partition::~Partition()
+{
+  if (fs)
+    delete fs;
+}
+
 void Partition::print()
 {
   std::cout << "Partition" << std::endl;
@@ -32,18 +38,24 @@ void Partition::print()
   PrintArray(LBA_offset_array_);
   std::cout << "Number of sector: ";
   PrintArray(nb_sector_);
-}
 
-void Partition::mount()
-{
-  if (type_[0] != 0x0B && LBA_offset_ > 0)
+  if (fs)
   {
-    /* Fat32 partition. */
-    //fs = new Fat();
+    std::cout << std::endl << "Fat32 partition" << std::endl;
+    fs->print();
   }
 }
 
-unsigned char Partition::get_LBA_offset()
+void Partition::mount(char* p)
+{
+  if (type_[0] == 0x0B && LBA_offset_ > 0)
+  {
+    /* Fat32 partition. */
+    fs = new Fat(p);
+  }
+}
+
+unsigned int Partition::get_LBA_offset()
 {
   return LBA_offset_;
 }

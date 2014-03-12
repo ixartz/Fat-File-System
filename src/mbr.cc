@@ -25,6 +25,11 @@ void Mbr::print()
   for (auto it: partition_vect_)
   {
     it->print();
-    std::cout << std::endl;
+    std::cout << "----------------------" << std::endl;
   }
+}
+
+std::vector<Partition*>& Mbr::get_partition_vect()
+{
+  return partition_vect_;
 }

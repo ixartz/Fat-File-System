@@ -8,6 +8,7 @@ int main(int argc, char* argv[])
     char* path = strcat(getenv("PWD"), "/");
     Input d(path, argv[1]);
     d.read();
+    d.mount();
     d.print();
   }
   else

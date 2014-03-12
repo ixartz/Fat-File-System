@@ -26,6 +26,11 @@ public:
    */
   void print();
 
+  /**
+   * \brief Mount all disk partitions.
+   */
+  void mount();
+
 private:
   /// Buffer of the input file.
   char buffer_[512];
@@ -36,7 +41,7 @@ private:
   std::fstream file_;
 
   /// Master Boot Record.
-  Mbr* mbr_;
+  Mbr* mbr_ = nullptr;
 };
 
 #endif /* !INPUT_HH */

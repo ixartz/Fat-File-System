@@ -11,6 +11,8 @@ class Partition
 public:
   /// Constructor.
   Partition(char* p);
+  /// Destructor.
+  ~Partition();
 
   /**
    * \brief Print partition information.
@@ -20,10 +22,11 @@ public:
   /**
    * \brief Mount the file system.
    */
-  void mount();
+  void mount(char* p);
 
   /// Return partition adress in LBA.
-  unsigned char get_LBA_offset();
+  unsigned int get_LBA_offset();
+
 private:
   unsigned char boot_flag_[1];
   /// Beginning of partition.
@@ -39,7 +42,7 @@ private:
   unsigned char nb_sector_[4];
 
   /// File system.
-  Fat* fs;
+  Fat* fs = nullptr;
 };
 
 #endif /* !PARTITION_HH */
