@@ -20,7 +20,8 @@ void Mbr::read_partition_(char* sector)
 
 void Mbr::print()
 {
-  std::cout << "Print MBR information" << std::endl << std::endl;
+  std::cout << "Print MBR information" << std::endl;
+  std::cout << "----------------------" << std::endl << std::endl;
 
   for (auto it: partition_vect_)
   {
