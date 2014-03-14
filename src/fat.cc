@@ -15,7 +15,8 @@ Fat::Fat(char* p)
   }
 
   memcpy(sec_per_lus_, p + 13, SizeOfArray(sec_per_lus_));
-  memcpy(rsvd_sec_cnt_, p + 14, SizeOfArray(rsvd_sec_cnt_));
+  memcpy(rsvd_sec_cnt_array_, p + 14, SizeOfArray(rsvd_sec_cnt_array_));
+  rsvd_sec_cnt_ = array_to_int(rsvd_sec_cnt_array_);
   memcpy(num_fats_array_, p + 16, SizeOfArray(num_fats_array_));
   num_fats_ = array_to_int(num_fats_array_);
 
@@ -32,7 +33,8 @@ Fat::Fat(char* p)
   memcpy(num_heads_, p + 26, SizeOfArray(num_heads_));
   memcpy(hidd_sec_, p + 28, SizeOfArray(hidd_sec_));
   memcpy(tot_sec32_, p + 32, SizeOfArray(tot_sec32_));
-  memcpy(fatz32_, p + 36, SizeOfArray(fatz32_));
+  memcpy(fatz32_array_, p + 36, SizeOfArray(fatz32_array_));
+  fatz32_ = array_to_int(fatz32_array_);
   memcpy(ext_flags_, p + 40, SizeOfArray(ext_flags_));
   memcpy(fs_ver_, p + 42, SizeOfArray(fs_ver_));
   memcpy(root_clus_, p + 44, SizeOfArray(root_clus_));
@@ -68,8 +70,9 @@ void Fat::print()
   PrintArray(nb_Byte_sector_array_);
   std::cout << "Number of sectors per allocation unit: ";
   PrintArray(sec_per_lus_);
-  std::cout << "Number of reserved sectors: ";
-  PrintArray(rsvd_sec_cnt_);
+  std::cout << "Number of reserved sectors: "
+            << rsvd_sec_cnt_ << " in hex: ";
+  PrintArray(rsvd_sec_cnt_array_);
   std::cout << "Number of FAT: "
             << num_fats_ << " in hex: ";
   PrintArray(num_fats_array_);
@@ -90,8 +93,9 @@ void Fat::print()
   std::cout << "Count of sector in new 32-bit: ";
   PrintArray(tot_sec32_);
 
-  std::cout << "32-bit count of sectors occupied by one FAT: ";
-  PrintArray(fatz32_);
+  std::cout << "32-bit count of sectors occupied by one FAT: "
+            << fatz32_ << " in hex: ";
+  PrintArray(fatz32_array_);
   std::cout << "Flags: ";
   PrintArray(ext_flags_);
   std::cout << "Version of FAT32 Drive: ";
@@ -112,8 +116,8 @@ void Fat::print()
   PrintArray(boot_sig_);
   std::cout << "Volume serial number: ";
   PrintArray(vol_id_);
-  std::cout << "Volume label: ";
-  PrintArray(vol_lab_);
-  std::cout << "File system type (informational only): ";
-  PrintArray(fil_sys_type_);
+  std::cout << "Volume label: ["
+            << std::string(vol_lab_) << "]" << std::endl;
+  std::cout << "File system type (informational only): ["
+            << std::string(fil_sys_type_) << "]" << std::endl;
 }
