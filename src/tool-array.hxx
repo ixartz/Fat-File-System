@@ -17,4 +17,15 @@ void PrintArray(const A (& array)[Size])
   printf("\n");
 }
 
+template <typename A, int Size>
+unsigned int array_to_int(const A (& array)[Size])
+{
+  unsigned int res = 0;
+
+  for (int i = Size - 1; i >= 0; --i)
+    res = (res << (sizeof(A) * 8)) | array[i];
+
+  return res;
+}
+
 #endif /* !TOOL_ARRAY_HXX */

@@ -6,6 +6,7 @@ Input::Input(char* path, char* filename)
 {
   if (!file_.is_open())
   {
+    /* TODO: Need an exception here */
     std::cerr << "Error while opening the file \"" << filename << "\"" << std::endl;
   }
 }

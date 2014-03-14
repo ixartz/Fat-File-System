@@ -21,10 +21,12 @@ private:
   /// OEM (original equipment manufacturer) identifier.
   char oem_identifier_[8];
   /// Number of Byte per sector.
-  unsigned char nb_Byte_sector_[2];
+  unsigned char nb_Byte_sector_array_[2];
+  unsigned int nb_Byte_sector_ = 0;
   unsigned char sec_per_lus_[1];
   unsigned char rsvd_sec_cnt_[2];
-  unsigned char num_fats_[1];
+  unsigned char num_fats_array_[1];
+  unsigned int num_fats_;
   unsigned char root_ent_cnt_[2];
   unsigned char tot_sec16_[2];
   unsigned char media_[1];
