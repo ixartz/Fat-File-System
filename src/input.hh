@@ -5,7 +5,6 @@
 # include <iostream>
 # include <fstream>
 # include <string.h>
-# include "mbr.hh"
 # include "tool-array.hh"
 
 class Input
@@ -16,23 +15,11 @@ public:
   /// Destructor.
   ~Input();
 
-  /**
-   * \brief Read the hard disk drive.
-   */
-  void read();
+  /// Return buffer for the next sector.
+  char* get_next_buffer();
 
-  /**
-   * \brief Print HDD information.
-   */
-  void print();
-
-  /**
-   * \brief Mount all disk partitions.
-   */
-  void mount();
-
-  /// Return buffer.
-  char* get_buffer();
+  /// Return buffer located at sector number 'location'
+  char* get_buffer_at(int location);
 
 private:
   /// Buffer of the input file.
@@ -42,9 +29,6 @@ private:
   std::string filename_;
   /// The stream to read.
   std::fstream file_;
-
-  /// Master Boot Record.
-  Mbr* mbr_ = nullptr;
 };
 
 #endif /* !INPUT_HH */

@@ -2,18 +2,14 @@
 # define MBR_HH
 
 # include <vector>
+# include "input.hh"
 # include "partition.hh"
 
 class Mbr
 {
 public:
   /// Constructor.
-  Mbr(char* in);
-
-  /**
-   * \brief Read the Master Boot Record (MBR) where LBA = 0.
-   */
-  void read();
+  Mbr(char* path, char* filename);
 
   /**
    * \brief Print the MBR information.
@@ -27,10 +23,18 @@ private:
   /**
    * \brief Read partition table.
    */
-  void read_partition_(char* sector);
+  void read_partition_();
+
+  /**
+   * \brief Mount all disk partitions.
+   */
+  void mount_partition_();
 
   /// Partition vector.
   std::vector<Partition*> partition_vect_;
+
+  /// Input.
+  Input in_;
 };
 
 #endif /* !MBR_HH */

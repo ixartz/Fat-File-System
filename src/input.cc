@@ -14,33 +14,16 @@ Input::Input(char* path, char* filename)
 Input::~Input()
 {
   file_.close();
-
-  if (mbr_)
-    delete mbr_;
 }
 
-void Input::read()
+char* Input::get_next_buffer()
 {
   file_.read(buffer_, SizeOfArray(buffer_));
-  mbr_ = new Mbr(buffer_);
-}
-
-void Input::mount()
-{
-  for (auto& it: mbr_->get_partition_vect())
-  {
-    file_.seekg(0x200 * it->get_LBA_offset());
-    file_.read(buffer_, SizeOfArray(buffer_));
-    it->mount(buffer_);
-  }
-}
-
-char* Input::get_buffer()
-{
   return buffer_;
 }
 
-void Input::print()
+char* Input::get_buffer_at(int location)
 {
-  mbr_->print();
+  file_.seekg(0x200 * location);
+  return get_next_buffer();
 }

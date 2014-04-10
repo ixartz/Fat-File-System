@@ -1,12 +1,15 @@
 #include "mbr.hh"
 
-Mbr::Mbr(char* in)
+Mbr::Mbr(char* path, char* filename)
+  : in_(path, filename)
 {
-  read_partition_(in);
+  read_partition_();
+  mount_partition_();
 }
 
-void Mbr::read_partition_(char* sector)
+void Mbr::read_partition_()
 {
+  char* sector = in_.get_next_buffer();
   char* partition_start = sector + 0x1BE; /* 0x1BE = 446 */
   Partition* p;
   unsigned char signature[2];
@@ -23,6 +26,17 @@ void Mbr::read_partition_(char* sector)
   if (signature[0] != 0x55 && signature[1] != 0xAA)
   {
     /* TODO: Need an exception here */
+  }
+}
+
+void Mbr::mount_partition_()
+{
+  char* p;
+
+  for (auto& it: partition_vect_)
+  {
+    p = in_.get_buffer_at(it->get_LBA_offset());
+    it->mount(p);
   }
 }
 
