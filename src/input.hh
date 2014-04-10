@@ -19,7 +19,7 @@ public:
   char* get_next_buffer();
 
   /// Return buffer located at sector number 'location'
-  char* get_buffer_at(int location);
+  char* get_buffer_at(unsigned int location);
 
 private:
   /// Buffer of the input file.

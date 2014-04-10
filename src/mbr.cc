@@ -31,12 +31,9 @@ void Mbr::read_partition_()
 
 void Mbr::mount_partition_()
 {
-  char* p;
-
-  for (auto& it: partition_vect_)
+  for (auto it: get_partition_vect())
   {
-    p = in_.get_buffer_at(it->get_LBA_offset());
-    it->mount(p);
+    it->mount(in_);
   }
 }
 
@@ -45,7 +42,7 @@ void Mbr::print()
   std::cout << "Print MBR information" << std::endl;
   std::cout << "----------------------" << std::endl;
 
-  for (auto& it: partition_vect_)
+  for (auto it: partition_vect_)
   {
     it->print();
     std::cout << "----------------------" << std::endl;

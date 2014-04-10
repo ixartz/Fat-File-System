@@ -22,7 +22,7 @@ char* Input::get_next_buffer()
   return buffer_;
 }
 
-char* Input::get_buffer_at(int location)
+char* Input::get_buffer_at(unsigned int location)
 {
   file_.seekg(0x200 * location);
   return get_next_buffer();

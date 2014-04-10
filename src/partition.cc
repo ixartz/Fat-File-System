@@ -42,11 +42,12 @@ void Partition::print()
   }
 }
 
-void Partition::mount(char* p)
+void Partition::mount(Input& in)
 {
   if (type_[0] == 0x0B && LBA_offset_ > 0)
   {
     /* Fat32 partition. */
+    char* p = in.get_buffer_at(get_LBA_offset());
     fs = new Fat(p);
   }
 }

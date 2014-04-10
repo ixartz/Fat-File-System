@@ -5,6 +5,7 @@
 # include <string.h>
 # include "tool-array.hh"
 # include "fat.hh"
+# include "input.hh"
 
 class Partition
 {
@@ -22,7 +23,7 @@ public:
   /**
    * \brief Mount the file system.
    */
-  void mount(char* p);
+  void mount(Input& in);
 
   /// Return partition adress in LBA.
   unsigned int get_LBA_offset();
