@@ -17,6 +17,7 @@ public:
    * \brief Print Fat32 information.
    */
   void print();
+
 private:
   /* BPB structure */
   /// Jump instruction to boot code.

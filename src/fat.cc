@@ -58,6 +58,8 @@ Fat::Fat(char* p)
 
 void Fat::print()
 {
+  std::cout << "Fat32 partition" << std::endl;
+
   std::cout << "Jump instruction: ";
   PrintArray(jmp_boot_);
 

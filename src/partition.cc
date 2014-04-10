@@ -37,8 +37,10 @@ void Partition::print()
 
   if (fs)
   {
-    std::cout << std::endl << "Fat32 partition" << std::endl;
+    std::cout << std::endl;
     fs->print();
+    std::cout << std::endl;
+    fsinfo->print();
   }
 }
 
@@ -49,6 +51,8 @@ void Partition::mount(Input& in)
     /* Fat32 partition. */
     char* p = in.get_buffer_at(get_LBA_offset());
     fs = new Fat(p);
+    char* p_fsinfo = in.get_buffer_at(get_LBA_offset() + 1);
+    fsinfo = new Fsinfo(p_fsinfo);
   }
 }
 

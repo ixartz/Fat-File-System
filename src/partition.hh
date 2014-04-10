@@ -5,6 +5,7 @@
 # include <string.h>
 # include "tool-array.hh"
 # include "fat.hh"
+# include "fsinfo.hh"
 # include "input.hh"
 
 class Partition
@@ -44,6 +45,8 @@ private:
 
   /// File system.
   Fat* fs = nullptr;
+  /// FSInfo.
+  Fsinfo* fsinfo = nullptr;
 };
 
 #endif /* !PARTITION_HH */
