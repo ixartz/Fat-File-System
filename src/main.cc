@@ -9,6 +9,9 @@ int main(int argc, char* argv[])
     char* path = strcat(getenv("PWD"), "/");
     Mbr disk(path, argv[1]);
     disk.print();
+
+    std::cout << "----------------------" << std::endl;
+    disk.list_root();
   }
   else
   {

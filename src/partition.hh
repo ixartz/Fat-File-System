@@ -7,6 +7,7 @@
 # include "fat.hh"
 # include "fsinfo.hh"
 # include "input.hh"
+# include "entry.hh"
 
 class Partition
 {
@@ -25,6 +26,11 @@ public:
    * \brief Mount the file system.
    */
   void mount(Input& in);
+
+  /**
+   * \brief List elements at root directory.
+   */
+  void list_root(Input& in);
 
   /// Return partition adress in LBA.
   unsigned int get_LBA_offset();

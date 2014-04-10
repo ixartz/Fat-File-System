@@ -22,8 +22,8 @@ char* Input::get_next_buffer()
   return buffer_;
 }
 
-char* Input::get_buffer_at(unsigned int location)
+char* Input::get_buffer_at(unsigned int location, unsigned int cluster_size)
 {
-  file_.seekg(0x200 * location);
+  file_.seekg(cluster_size * location);
   return get_next_buffer();
 }

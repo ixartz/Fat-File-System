@@ -42,10 +42,21 @@ void Mbr::print()
   std::cout << "Print MBR information" << std::endl;
   std::cout << "----------------------" << std::endl;
 
-  for (auto it: partition_vect_)
+  for (auto it: get_partition_vect())
   {
     it->print();
     std::cout << "----------------------" << std::endl;
+  }
+}
+
+void Mbr::list_root()
+{
+  std::cout << "Print root directories" << std::endl;
+  std::cout << "----------------------" << std::endl;
+
+  for (auto it: get_partition_vect())
+  {
+    it->list_root(in_);
   }
 }
 

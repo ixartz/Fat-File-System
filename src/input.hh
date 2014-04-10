@@ -19,7 +19,7 @@ public:
   char* get_next_buffer();
 
   /// Return buffer located at sector number 'location'
-  char* get_buffer_at(unsigned int location);
+  char* get_buffer_at(unsigned int location, unsigned int cluster_size = 0x200);
 
 private:
   /// Buffer of the input file.

@@ -16,6 +16,11 @@ public:
    */
   void print();
 
+  /**
+   * \brief List all root directories.
+   */
+  void list_root();
+
   /// Return partition vector
   std::vector<Partition*>& get_partition_vect();
 

@@ -18,6 +18,15 @@ public:
    */
   void print();
 
+  /// Return number of Byte per sector
+  unsigned int get_nb_Byte_sector();
+
+  /// Return number of reserved sector
+  unsigned int get_rsvd_sec_cnt();
+
+  /// Return number sector per Fat
+  unsigned int get_fatz32();
+
 private:
   /* BPB structure */
   /// Jump instruction to boot code.
@@ -29,7 +38,7 @@ private:
   unsigned int nb_Byte_sector_ = 0;
   unsigned char sec_per_lus_[1];
   unsigned char rsvd_sec_cnt_array_[2];
-  unsigned int rsvd_sec_cnt_;
+  unsigned int rsvd_sec_cnt_ = 0;
   unsigned char num_fats_array_[1];
   unsigned int num_fats_;
   unsigned char root_ent_cnt_[2];

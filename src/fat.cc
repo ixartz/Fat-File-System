@@ -123,3 +123,18 @@ void Fat::print()
   std::cout << "File system type (informational only): ["
             << std::string(fil_sys_type_) << "]" << std::endl;
 }
+
+unsigned int Fat::get_nb_Byte_sector()
+{
+  return nb_Byte_sector_;
+}
+
+unsigned int Fat::get_rsvd_sec_cnt()
+{
+  return rsvd_sec_cnt_;
+}
+
+unsigned int Fat::get_fatz32()
+{
+  return fatz32_;
+}

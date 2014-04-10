@@ -56,6 +56,19 @@ void Partition::mount(Input& in)
   }
 }
 
+void Partition::list_root(Input& in)
+{
+  if (fs)
+  {
+    char* p = in.get_buffer_at(get_LBA_offset() + fs->get_rsvd_sec_cnt() + fs->get_fatz32() * 2,
+                               fs->get_nb_Byte_sector());
+
+    Entry e(p);
+
+    std::cout << e << std::endl;
+  }
+}
+
 unsigned int Partition::get_LBA_offset()
 {
   return LBA_offset_;
