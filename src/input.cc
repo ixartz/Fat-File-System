@@ -27,12 +27,17 @@ void Input::read()
 
 void Input::mount()
 {
-  for (auto it: mbr_->get_partition_vect())
+  for (auto& it: mbr_->get_partition_vect())
   {
     file_.seekg(0x200 * it->get_LBA_offset());
     file_.read(buffer_, SizeOfArray(buffer_));
     it->mount(buffer_);
   }
+}
+
+char* Input::get_buffer()
+{
+  return buffer_;
 }
 
 void Input::print()

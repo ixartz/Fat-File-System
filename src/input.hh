@@ -31,6 +31,9 @@ public:
    */
   void mount();
 
+  /// Return buffer.
+  char* get_buffer();
+
 private:
   /// Buffer of the input file.
   char buffer_[512];

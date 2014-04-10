@@ -8,7 +8,7 @@ class Mbr
 {
 public:
   /// Constructor.
-  Mbr(char* path);
+  Mbr(char* in);
 
   /**
    * \brief Read the Master Boot Record (MBR) where LBA = 0.

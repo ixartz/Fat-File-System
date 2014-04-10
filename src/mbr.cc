@@ -1,8 +1,8 @@
 #include "mbr.hh"
 
-Mbr::Mbr(char* sector)
+Mbr::Mbr(char* in)
 {
-  read_partition_(sector);
+  read_partition_(in);
 }
 
 void Mbr::read_partition_(char* sector)
@@ -31,7 +31,7 @@ void Mbr::print()
   std::cout << "Print MBR information" << std::endl;
   std::cout << "----------------------" << std::endl;
 
-  for (auto it: partition_vect_)
+  for (auto& it: partition_vect_)
   {
     it->print();
     std::cout << "----------------------" << std::endl;
