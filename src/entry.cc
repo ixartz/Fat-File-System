@@ -6,7 +6,12 @@ Entry::Entry(char* p)
   memcpy(attr_, p + 11, SizeOfArray(attr_));
   memcpy(ntres_, p + 12, SizeOfArray(ntres_));
   memcpy(crt_time_tenth_, p + 13, SizeOfArray(crt_time_tenth_));
+
+  /* Get creation time */
   memcpy(crt_time_, p + 14, SizeOfArray(crt_time_));
+  crt_time_hour_ = calculate_hour(crt_time_);
+  crt_time_minute_ = calculate_month(crt_time_);
+  crt_time_second_ = calculate_second(crt_time_);
 
   /* Get creation date */
   memcpy(crt_date_, p + 16, SizeOfArray(crt_date_));
@@ -22,7 +27,12 @@ Entry::Entry(char* p)
 
   memcpy(fst_clus_hi_array_, p + 20, SizeOfArray(fst_clus_hi_array_));
   fst_clus_hi_ = array_to_int(fst_clus_hi_array_);
+
+  /* Get time of last write */
   memcpy(wrt_time_, p + 22, SizeOfArray(wrt_time_));
+  wrt_time_hour_ = calculate_hour(wrt_time_);
+  wrt_time_minute_ = calculate_minute(wrt_time_);
+  wrt_time_second_ = calculate_second(wrt_time_);
 
   /* Get date of last write */
   memcpy(wrt_date_, p + 24, SizeOfArray(wrt_date_));
@@ -51,6 +61,21 @@ unsigned char Entry::calculate_day(unsigned char date[2])
   return date[0] & 0x1F;
 }
 
+unsigned char Entry::calculate_hour(unsigned char date[2])
+{
+  return (date[1] & 0xF8) >> 3;
+}
+
+unsigned char Entry::calculate_minute(unsigned char date[2])
+{
+  return ((date[1] & 0x07) << 3) | (date[0] & 0xE0) >> 5;
+}
+
+unsigned char Entry::calculate_second(unsigned char date[2])
+{
+  return date[0] & 0x1F;
+}
+
 std::ostream& Entry::print_date(std::ostream& ostr,
                                 unsigned char year,
                                 unsigned char month,
@@ -59,6 +84,16 @@ std::ostream& Entry::print_date(std::ostream& ostr,
   return ostr << 1980 + year << "-"
               << promote_int(month) << "-"
               << promote_int(day);
+}
+
+std::ostream& Entry::print_time(std::ostream& ostr,
+                                unsigned char hour,
+                                unsigned char minute,
+                                unsigned char second)
+{
+  return ostr << promote_int(hour) << ":"
+              << promote_int(minute) << ":"
+              << promote_int(second);
 }
 
 void Entry::print_creation_date(std::ostream& ostr)
@@ -76,6 +111,16 @@ void Entry::print_write_date(std::ostream& ostr)
   Entry::print_date(ostr, wrt_date_year_, wrt_date_month_, wrt_date_day_);
 }
 
+void Entry::print_creation_time(std::ostream& ostr)
+{
+  Entry::print_time(ostr, crt_time_hour_, crt_time_minute_, crt_time_second_);
+}
+
+void Entry::print_write_time(std::ostream& ostr)
+{
+  Entry::print_time(ostr, wrt_time_hour_, wrt_time_minute_, wrt_time_second_);
+}
+
 std::ostream& operator<<(std::ostream& ostr, Entry& e)
 {
   ostr << "Short filename: [" << std::string(e.short_filename_) << "]"
@@ -85,8 +130,15 @@ std::ostream& operator<<(std::ostream& ostr, Entry& e)
        << "  Created: ";
   e.print_creation_date(ostr);
 
+  ostr << " ";
+
+  e.print_creation_time(ostr);
+
   ostr << " - Modified: ";
   e.print_write_date(ostr);
+
+  ostr << " ";
+  e.print_write_time(ostr);
 
   ostr << " - Last opened: ";
   e.print_last_access_date(ostr);
