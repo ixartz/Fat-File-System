@@ -24,6 +24,15 @@ void PrintArray(const A (& array)[Size]);
 template <typename A, int Size>
 unsigned int array_to_int();
 
+/**
+ * \brief Promotes i to a type printable as a number.
+ * A class that represents a number, to provide a unary + operator
+ * with canonical semantics, create an operator+() that simply
+ * returns *this either by value or by reference-to-const.
+ */
+template <typename T>
+auto promote_int(T i) -> decltype(+i);
+
 # include "tool-array.hxx"
 
 #endif /* !TOOL_ARRAY_HH */

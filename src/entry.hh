@@ -1,6 +1,7 @@
 #ifndef ENTRY_HH
 # define ENTRY_HH
 
+# include <sstream>
 # include <string.h>
 # include "tool-array.hh"
 
@@ -11,9 +12,43 @@ public:
   Entry(char* p);
 
   /**
-   * \brief Calculate the year from a date.
+   * \brief Calculate count of years from 1980
+   * (valid value range 0–127 inclusive (1980–2107)).
    */
   static unsigned char calculate_year(unsigned char date[2]);
+
+  /**
+   * \brief Calculate the month of year.
+   */
+  static unsigned char calculate_month(unsigned char date[2]);
+
+  /**
+   * \brief Calculate the day of month.
+   */
+  static unsigned char calculate_day(unsigned char date[2]);
+
+  /**
+   * \brief Date format to string.
+   */
+  static std::ostream& print_date(std::ostream& ostr,
+                                  unsigned char year,
+                                  unsigned char month,
+                                  unsigned char day);
+
+  /**
+   * \brief Get date file was created.
+   */
+  void print_creation_date(std::ostream& ostr);
+
+  /**
+   * \brief Get the date of last read or write.
+   */
+  void print_last_access_date(std::ostream& ostr);
+
+  /**
+   * \brief Get the date of last write
+   */
+  void print_write_date(std::ostream& ostr);
 
 private:
   char short_filename_[11];
@@ -23,11 +58,19 @@ private:
   unsigned char crt_time_[2];
   unsigned char crt_date_[2];
   unsigned char crt_date_year_;
+  unsigned char crt_date_month_;
+  unsigned char crt_date_day_;
   unsigned char lst_acc_date_[2];
+  unsigned char lst_acc_date_year_;
+  unsigned char lst_acc_date_month_;
+  unsigned char lst_acc_date_day_;
   unsigned char fst_clus_hi_array_[2];
   unsigned int fst_clus_hi_ = 0;
   unsigned char wrt_time_[2];
   unsigned char wrt_date_[2];
+  unsigned char wrt_date_year_;
+  unsigned char wrt_date_month_;
+  unsigned char wrt_date_day_;
   unsigned char fst_clus_lo_array_[2];
   unsigned int fst_clus_lo_ = 0;
   unsigned char file_size_array_[4];

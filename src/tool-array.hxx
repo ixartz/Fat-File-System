@@ -28,4 +28,10 @@ unsigned int array_to_int(const A (& array)[Size])
   return res;
 }
 
+template <typename T>
+auto promote_int(T i) -> decltype(+i)
+{
+  return +i;
+}
+
 #endif /* !TOOL_ARRAY_HXX */
