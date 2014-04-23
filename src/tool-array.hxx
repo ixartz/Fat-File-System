@@ -28,6 +28,13 @@ unsigned int array_to_int(const A (& array)[Size])
   return res;
 }
 
+template <typename A, int Size>
+void read_string(A (& array)[Size], char* p)
+{
+  memcpy(array, p, Size - 1);
+  array[Size - 1] = 0;
+}
+
 template <typename T>
 auto promote_int(T i) -> decltype(+i)
 {

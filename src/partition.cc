@@ -63,7 +63,7 @@ void Partition::list_root(Input& in)
     char* p = in.get_buffer_at(get_LBA_offset() + fs->get_rsvd_sec_cnt() + fs->get_fatz32() * 2,
                                fs->get_nb_Byte_sector());
 
-    Entry e(p);
+    Entry e(p + 3 * 32);
 
     std::cout << e << std::endl;
   }

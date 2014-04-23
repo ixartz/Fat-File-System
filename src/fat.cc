@@ -5,7 +5,7 @@ Fat::Fat(char* p)
   unsigned char signature[2];
 
   memcpy(jmp_boot_, p, SizeOfArray(jmp_boot_));
-  memcpy(oem_identifier_, p + 3, SizeOfArray(oem_identifier_));
+  read_string(oem_identifier_, p + 3);
   memcpy(nb_Byte_sector_array_, p + 11, SizeOfArray(nb_Byte_sector_array_));
   nb_Byte_sector_ = array_to_int(nb_Byte_sector_array_);
 
@@ -14,7 +14,7 @@ Fat::Fat(char* p)
     /* TODO: Need an exception here */
   }
 
-  memcpy(sec_per_lus_, p + 13, SizeOfArray(sec_per_lus_));
+  memcpy(sec_per_clus_, p + 13, SizeOfArray(sec_per_clus_));
   memcpy(rsvd_sec_cnt_array_, p + 14, SizeOfArray(rsvd_sec_cnt_array_));
   rsvd_sec_cnt_ = array_to_int(rsvd_sec_cnt_array_);
   memcpy(num_fats_array_, p + 16, SizeOfArray(num_fats_array_));
@@ -45,8 +45,8 @@ Fat::Fat(char* p)
   memcpy(reserved1_, p + 65, SizeOfArray(reserved1_));
   memcpy(boot_sig_, p + 66, SizeOfArray(boot_sig_));
   memcpy(vol_id_, p + 67, SizeOfArray(vol_id_));
-  memcpy(vol_lab_, p + 71, SizeOfArray(vol_lab_));
-  memcpy(fil_sys_type_, p + 82, SizeOfArray(fil_sys_type_));
+  read_string(vol_lab_, p + 71);
+  read_string(fil_sys_type_, p + 82);
 
   memcpy(signature, p + 0x1FE, SizeOfArray(signature));
 
@@ -63,15 +63,15 @@ void Fat::print()
   std::cout << "Jump instruction: ";
   PrintArray(jmp_boot_);
 
-  std::cout << "OEM identifier: "
-            << std::string(oem_identifier_)
-            << std::endl;
+  std::cout << "OEM identifier: ["
+            << oem_identifier_
+            << "]" << std::endl;
 
   std::cout << "Number of Byte per sector: "
             << nb_Byte_sector_ << " in hex: ";
   PrintArray(nb_Byte_sector_array_);
   std::cout << "Number of sectors per allocation unit: ";
-  PrintArray(sec_per_lus_);
+  PrintArray(sec_per_clus_);
   std::cout << "Number of reserved sectors: "
             << rsvd_sec_cnt_ << " in hex: ";
   PrintArray(rsvd_sec_cnt_array_);
@@ -119,9 +119,9 @@ void Fat::print()
   std::cout << "Volume serial number: ";
   PrintArray(vol_id_);
   std::cout << "Volume label: ["
-            << std::string(vol_lab_) << "]" << std::endl;
+            << vol_lab_ << "]" << std::endl;
   std::cout << "File system type (informational only): ["
-            << std::string(fil_sys_type_) << "]" << std::endl;
+            << fil_sys_type_ << "]" << std::endl;
 }
 
 unsigned int Fat::get_nb_Byte_sector()

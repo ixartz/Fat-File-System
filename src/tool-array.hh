@@ -25,6 +25,12 @@ template <typename A, int Size>
 unsigned int array_to_int();
 
 /**
+ * \brief Read a string.
+ */
+template <typename A, int Size>
+void read_string(const A (& array)[Size], char* p);
+
+/**
  * \brief Promotes i to a type printable as a number.
  * A class that represents a number, to provide a unary + operator
  * with canonical semantics, create an operator+() that simply

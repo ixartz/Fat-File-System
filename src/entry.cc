@@ -2,7 +2,8 @@
 
 Entry::Entry(char* p)
 {
-  memcpy(short_filename_, p, SizeOfArray(short_filename_));
+  read_string(short_filename_, p);
+
   memcpy(attr_, p + 11, SizeOfArray(attr_));
   memcpy(ntres_, p + 12, SizeOfArray(ntres_));
   memcpy(crt_time_tenth_, p + 13, SizeOfArray(crt_time_tenth_));
@@ -123,7 +124,7 @@ void Entry::print_write_time(std::ostream& ostr)
 
 std::ostream& operator<<(std::ostream& ostr, Entry& e)
 {
-  ostr << "Short filename: [" << std::string(e.short_filename_) << "]"
+  ostr << "Short filename: [" << e.short_filename_ << "]"
        << " - Size: " << e.file_size_
        << " - First cluster: " << e.fst_clus_hi_
        << " - Last cluster: " << e.fst_clus_lo_ << std::endl
@@ -131,7 +132,6 @@ std::ostream& operator<<(std::ostream& ostr, Entry& e)
   e.print_creation_date(ostr);
 
   ostr << " ";
-
   e.print_creation_time(ostr);
 
   ostr << " - Modified: ";

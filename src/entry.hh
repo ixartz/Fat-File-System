@@ -84,7 +84,7 @@ public:
   void print_write_time(std::ostream& ostr);
 
 private:
-  char short_filename_[11];
+  char short_filename_[9];
   unsigned char attr_[1];
   unsigned char ntres_[1];
   unsigned char crt_time_tenth_[1];

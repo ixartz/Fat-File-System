@@ -32,11 +32,11 @@ private:
   /// Jump instruction to boot code.
   unsigned char jmp_boot_[3];
   /// OEM (original equipment manufacturer) identifier.
-  char oem_identifier_[8];
+  char oem_identifier_[9];
   /// Number of Byte per sector.
   unsigned char nb_Byte_sector_array_[2];
   unsigned int nb_Byte_sector_ = 0;
-  unsigned char sec_per_lus_[1];
+  unsigned char sec_per_clus_[1];
   unsigned char rsvd_sec_cnt_array_[2];
   unsigned int rsvd_sec_cnt_ = 0;
   unsigned char num_fats_array_[1];
@@ -63,8 +63,8 @@ private:
   unsigned char reserved1_[1];
   unsigned char boot_sig_[1];
   unsigned char vol_id_[4];
-  char vol_lab_[11];
-  char fil_sys_type_[8];
+  char vol_lab_[12];
+  char fil_sys_type_[9];
 };
 
 #endif /* !FAT_HH */
