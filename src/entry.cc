@@ -26,8 +26,7 @@ Entry::Entry(char* p)
   lst_acc_date_month_ = calculate_month(lst_acc_date_);
   lst_acc_date_day_ = calculate_day(lst_acc_date_);
 
-  memcpy(fst_clus_hi_array_, p + 20, SizeOfArray(fst_clus_hi_array_));
-  fst_clus_hi_ = array_to_int(fst_clus_hi_array_);
+  memcpy(fst_clus_hi_, p + 20, SizeOfArray(fst_clus_hi_));
 
   /* Get time of last write */
   memcpy(wrt_time_, p + 22, SizeOfArray(wrt_time_));
@@ -41,8 +40,9 @@ Entry::Entry(char* p)
   wrt_date_month_ = calculate_month(wrt_date_);
   wrt_date_day_ = calculate_day(wrt_date_);
 
-  memcpy(fst_clus_lo_array_, p + 26, SizeOfArray(fst_clus_lo_array_));
-  fst_clus_lo_ = array_to_int(fst_clus_lo_array_);
+  memcpy(fst_clus_lo_, p + 26, SizeOfArray(fst_clus_lo_));
+  calculate_first_cluster();
+
   memcpy(file_size_array_, p + 28, SizeOfArray(file_size_array_));
   file_size_ = array_to_int(file_size_array_);
 }
@@ -122,12 +122,18 @@ void Entry::print_write_time(std::ostream& ostr)
   Entry::print_time(ostr, wrt_time_hour_, wrt_time_minute_, wrt_time_second_);
 }
 
+void Entry::calculate_first_cluster()
+{
+  unsigned int hi_ = array_to_int(fst_clus_hi_);
+  unsigned int lo_ = array_to_int(fst_clus_lo_);
+  fst_clus_ = hi_ << 8 | lo_;
+}
+
 std::ostream& operator<<(std::ostream& ostr, Entry& e)
 {
   ostr << "Short filename: [" << e.short_filename_ << "]"
        << " - Size: " << e.file_size_
-       << " - First cluster: " << e.fst_clus_hi_
-       << " - Last cluster: " << e.fst_clus_lo_ << std::endl
+       << " - First cluster: " << e.fst_clus_ << std::endl
        << "  Created: ";
   e.print_creation_date(ostr);
 

@@ -59,29 +59,34 @@ public:
                                   unsigned char second);
 
   /**
-   * \brief Get the date file was created.
+   * \brief Print the date file was created.
    */
   void print_creation_date(std::ostream& ostr);
 
   /**
-   * \brief Get the date of last read or write.
+   * \brief Print the date of last read or write.
    */
   void print_last_access_date(std::ostream& ostr);
 
   /**
-   * \brief Get the date of last write
+   * \brief Print the date of last write
    */
   void print_write_date(std::ostream& ostr);
 
   /**
-   * \brief Get the time file was created.
+   * \brief Print the time file was created.
    */
   void print_creation_time(std::ostream& ostr);
 
   /**
-   * \brief Get the time of last write
+   * \brief Print the time of last write
    */
   void print_write_time(std::ostream& ostr);
+
+  /**
+   * \brief Calculate the first cluster number.
+   */
+  void calculate_first_cluster();
 
 private:
   char short_filename_[9];
@@ -100,8 +105,7 @@ private:
   unsigned char lst_acc_date_year_;
   unsigned char lst_acc_date_month_;
   unsigned char lst_acc_date_day_;
-  unsigned char fst_clus_hi_array_[2];
-  unsigned int fst_clus_hi_ = 0;
+  unsigned char fst_clus_hi_[2];
   unsigned char wrt_time_[2];
   unsigned char wrt_time_hour_;
   unsigned char wrt_time_minute_;
@@ -110,8 +114,8 @@ private:
   unsigned char wrt_date_year_;
   unsigned char wrt_date_month_;
   unsigned char wrt_date_day_;
-  unsigned char fst_clus_lo_array_[2];
-  unsigned int fst_clus_lo_ = 0;
+  unsigned char fst_clus_lo_[2];
+  unsigned int fst_clus_ = 0;
   unsigned char file_size_array_[4];
   unsigned int file_size_ = 0;
 
