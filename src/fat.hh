@@ -21,11 +21,17 @@ public:
   /// Return number of Byte per sector
   unsigned int get_nb_Byte_sector();
 
+  /// Return number of sector per cluster
+  unsigned char get_sec_per_clus_();
+
   /// Return number of reserved sector
   unsigned int get_rsvd_sec_cnt();
 
   /// Return number sector per Fat
   unsigned int get_fatz32();
+
+  /// Return cluster number of root directory.
+  unsigned int get_root_clus_();
 
 private:
   /* BPB structure */
@@ -36,7 +42,8 @@ private:
   /// Number of Byte per sector.
   unsigned char nb_Byte_sector_array_[2];
   unsigned int nb_Byte_sector_ = 0;
-  unsigned char sec_per_clus_[1];
+  unsigned char sec_per_clus_array_[1];
+  unsigned char sec_per_clus_;
   unsigned char rsvd_sec_cnt_array_[2];
   unsigned int rsvd_sec_cnt_ = 0;
   unsigned char num_fats_array_[1];
@@ -55,7 +62,8 @@ private:
   unsigned int fatz32_;
   unsigned char ext_flags_[2];
   unsigned char fs_ver_[2];
-  unsigned char root_clus_[4];
+  unsigned char root_clus_array_[4];
+  unsigned int root_clus_;
   unsigned char fs_info_[2];
   unsigned char bk_boot_sec_[2];
   unsigned char reserved_[12];

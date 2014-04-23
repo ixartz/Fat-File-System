@@ -14,7 +14,9 @@ Fat::Fat(char* p)
     /* TODO: Need an exception here */
   }
 
-  memcpy(sec_per_clus_, p + 13, SizeOfArray(sec_per_clus_));
+  memcpy(sec_per_clus_array_, p + 13, SizeOfArray(sec_per_clus_array_));
+  sec_per_clus_ = sec_per_clus_array_[0];
+
   memcpy(rsvd_sec_cnt_array_, p + 14, SizeOfArray(rsvd_sec_cnt_array_));
   rsvd_sec_cnt_ = array_to_int(rsvd_sec_cnt_array_);
   memcpy(num_fats_array_, p + 16, SizeOfArray(num_fats_array_));
@@ -37,7 +39,8 @@ Fat::Fat(char* p)
   fatz32_ = array_to_int(fatz32_array_);
   memcpy(ext_flags_, p + 40, SizeOfArray(ext_flags_));
   memcpy(fs_ver_, p + 42, SizeOfArray(fs_ver_));
-  memcpy(root_clus_, p + 44, SizeOfArray(root_clus_));
+  memcpy(root_clus_array_, p + 44, SizeOfArray(root_clus_array_));
+  root_clus_ = array_to_int(root_clus_array_);
   memcpy(fs_info_, p + 48, SizeOfArray(fs_info_));
   memcpy(bk_boot_sec_, p + 50, SizeOfArray(bk_boot_sec_));
   memcpy(reserved_, p + 52, SizeOfArray(reserved_));
@@ -70,8 +73,10 @@ void Fat::print()
   std::cout << "Number of Byte per sector: "
             << nb_Byte_sector_ << " in hex: ";
   PrintArray(nb_Byte_sector_array_);
-  std::cout << "Number of sectors per allocation unit: ";
-  PrintArray(sec_per_clus_);
+  std::cout << "Number of sectors per allocation unit: "
+            << promote_int(sec_per_clus_) << " in hex: ";
+  PrintArray(sec_per_clus_array_);
+
   std::cout << "Number of reserved sectors: "
             << rsvd_sec_cnt_ << " in hex: ";
   PrintArray(rsvd_sec_cnt_array_);
@@ -102,8 +107,10 @@ void Fat::print()
   PrintArray(ext_flags_);
   std::cout << "Version of FAT32 Drive: ";
   PrintArray(fs_ver_);
-  std::cout << "Cluster number of root directory: ";
-  PrintArray(root_clus_);
+  std::cout << "Cluster number of root directory: "
+            << root_clus_ << " in hex: ";
+  PrintArray(root_clus_array_);
+
   std::cout << "Sector number of FSINFO: ";
   PrintArray(fs_info_);
   std::cout << "Sector Number of the BackupBoot Sector: ";
@@ -129,6 +136,11 @@ unsigned int Fat::get_nb_Byte_sector()
   return nb_Byte_sector_;
 }
 
+unsigned char Fat::get_sec_per_clus_()
+{
+  return sec_per_clus_;
+}
+
 unsigned int Fat::get_rsvd_sec_cnt()
 {
   return rsvd_sec_cnt_;
@@ -137,4 +149,9 @@ unsigned int Fat::get_rsvd_sec_cnt()
 unsigned int Fat::get_fatz32()
 {
   return fatz32_;
+}
+
+unsigned int Fat::get_root_clus_()
+{
+  return root_clus_;
 }

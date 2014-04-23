@@ -1,6 +1,7 @@
 #include "entry.hh"
 
-Entry::Entry(char* p)
+Entry::Entry(Fat* fs, char* p)
+  : fs_(fs)
 {
   read_string(short_filename_, p);
 
@@ -129,6 +130,15 @@ void Entry::calculate_first_cluster()
   fst_clus_ = hi_ << 8 | lo_;
 }
 
+void Entry::load_content(Input& in, unsigned int offset)
+{
+  char* p = in.get_buffer_at(fs_->get_sec_per_clus_()
+                             * (fst_clus_ - fs_->get_root_clus_()) + offset,
+                             fs_->get_nb_Byte_sector());
+
+  memcpy(content_, p, SizeOfArray(content_));
+}
+
 std::ostream& operator<<(std::ostream& ostr, Entry& e)
 {
   ostr << "Short filename: [" << e.short_filename_ << "]"
@@ -148,6 +158,11 @@ std::ostream& operator<<(std::ostream& ostr, Entry& e)
 
   ostr << " - Last opened: ";
   e.print_last_access_date(ostr);
+
+  ostr << std::endl
+       << "--------File content--------" << std::endl
+       << e.content_ << std::endl
+       << "--------END--------";
 
   return ostr;
 }

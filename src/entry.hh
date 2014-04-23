@@ -3,13 +3,15 @@
 
 # include <sstream>
 # include <string.h>
+# include "fat.hh"
+# include "input.hh"
 # include "tool-array.hh"
 
 class Entry
 {
 public:
   /// Constructor.
-  Entry(char* p);
+  Entry(Fat* fs, char* p);
 
   /**
    * \brief Calculate count of years from 1980
@@ -88,7 +90,14 @@ public:
    */
   void calculate_first_cluster();
 
+  /**
+   * \brief Load content file.
+   */
+  void load_content(Input& in, unsigned int offset);
+
 private:
+  Fat* fs_;
+
   char short_filename_[9];
   unsigned char attr_[1];
   unsigned char ntres_[1];
@@ -118,6 +127,8 @@ private:
   unsigned int fst_clus_ = 0;
   unsigned char file_size_array_[4];
   unsigned int file_size_ = 0;
+
+  char content_[512];
 
   friend std::ostream& operator<<(std::ostream& ostr, Entry& e);
 };

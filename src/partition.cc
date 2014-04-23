@@ -60,10 +60,14 @@ void Partition::list_root(Input& in)
 {
   if (fs)
   {
-    char* p = in.get_buffer_at(get_LBA_offset() + fs->get_rsvd_sec_cnt() + fs->get_fatz32() * 2,
-                               fs->get_nb_Byte_sector());
+    unsigned int offset = get_LBA_offset()
+                        + fs->get_rsvd_sec_cnt()
+                        + fs->get_fatz32() * 2;
 
-    Entry e(p + 3 * 32);
+    char* p = in.get_buffer_at(offset, fs->get_nb_Byte_sector());
+
+    Entry e(fs, p + 3 * 32);
+    e.load_content(in, offset);
 
     std::cout << e << std::endl;
   }
