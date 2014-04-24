@@ -13,6 +13,30 @@ public:
   /// Constructor.
   Entry(Fat* fs, char* p);
 
+  /// Indicates that writes to the file should fail.
+  static constexpr unsigned char ATTR_READ_ONLY = 0x01;
+
+  /// Indicates that normal directory listings should not show this file.
+  static constexpr unsigned char ATTR_HIDDEN = 0x02;
+
+  /// Indicates that this is an operating system file.
+  static constexpr unsigned char ATTR_SYSTEM = 0x04;
+
+  /// Indicates the name of this file is actually the label for the volume.
+  static constexpr unsigned char ATTR_VOLUME_ID = 0x08;
+
+  /// Indicates that this file is actually a container for other files.
+  static constexpr unsigned char ATTR_DIRECTORY = 0x10;
+
+  /// Backup utilities may use this attribute.
+  static constexpr unsigned char ATTR_ARCHIVE = 0x20;
+
+  /// The file is actually part of the long name entry for some other file.
+  static constexpr unsigned char ATTR_LONG_NAME = ATTR_READ_ONLY
+                                                  | ATTR_HIDDEN
+                                                  | ATTR_SYSTEM
+                                                  | ATTR_VOLUME_ID;
+
   /**
    * \brief Calculate count of years from 1980
    * (valid value range 0–127 inclusive (1980–2107)).
@@ -61,6 +85,16 @@ public:
                                   unsigned char second);
 
   /**
+   * \brief Indicates whether the entry has a long name or not
+   */
+  bool has_long_name();
+
+  /**
+   * \brief Indicates whether the entry is a directory or not.
+   */
+  bool is_directory();
+
+  /**
    * \brief Print the date file was created.
    */
   void print_creation_date(std::ostream& ostr);
@@ -86,6 +120,11 @@ public:
   void print_write_time(std::ostream& ostr);
 
   /**
+   * \brief Print all attribute.
+   */
+  void print_attribute(std::ostream& ostr);
+
+  /**
    * \brief Calculate the first cluster number.
    */
   void calculate_first_cluster();
@@ -99,7 +138,9 @@ private:
   Fat* fs_;
 
   char short_filename_[9];
-  unsigned char attr_[1];
+  char extension_[4];
+  unsigned char attr_array_[1];
+  unsigned char attr_;
   unsigned char ntres_[1];
   unsigned char crt_time_tenth_[1];
   unsigned char crt_time_[2];

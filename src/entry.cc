@@ -4,8 +4,11 @@ Entry::Entry(Fat* fs, char* p)
   : fs_(fs)
 {
   read_string(short_filename_, p);
+  read_string(extension_, p + 8);
 
-  memcpy(attr_, p + 11, SizeOfArray(attr_));
+  memcpy(attr_array_, p + 11, SizeOfArray(attr_array_));
+  attr_ = attr_array_[0];
+
   memcpy(ntres_, p + 12, SizeOfArray(ntres_));
   memcpy(crt_time_tenth_, p + 13, SizeOfArray(crt_time_tenth_));
 
@@ -98,6 +101,21 @@ std::ostream& Entry::print_time(std::ostream& ostr,
               << promote_int(second);
 }
 
+bool Entry::has_long_name()
+{
+  return (attr_ & (ATTR_READ_ONLY
+                   | ATTR_HIDDEN
+                   | ATTR_SYSTEM
+                   | ATTR_VOLUME_ID
+                   | ATTR_DIRECTORY
+                   | ATTR_ARCHIVE)) == ATTR_LONG_NAME;
+}
+
+bool Entry::is_directory()
+{
+  return attr_ & (ATTR_DIRECTORY | ATTR_VOLUME_ID);
+}
+
 void Entry::print_creation_date(std::ostream& ostr)
 {
   Entry::print_date(ostr, crt_date_year_, crt_date_month_, crt_date_day_);
@@ -130,6 +148,44 @@ void Entry::calculate_first_cluster()
   fst_clus_ = hi_ << 8 | lo_;
 }
 
+void Entry::print_attribute(std::ostream& ostr)
+{
+  ostr << std::endl
+       << "  Attribute:";
+
+  if (has_long_name())
+  {
+    ostr << " LONG_NAME";
+  }
+  else
+  {
+    if (attr_ & ATTR_READ_ONLY)
+    {
+      ostr << " READ_ONLY";
+    }
+    else if (attr_ & ATTR_HIDDEN)
+    {
+      ostr << " HIDDEN";
+    }
+    else if (attr_ & ATTR_SYSTEM)
+    {
+      ostr << " SYSTEM";
+    }
+    else if (attr_ & ATTR_VOLUME_ID)
+    {
+      ostr << " VOLUME_ID";
+    }
+    else if (attr_ & ATTR_DIRECTORY)
+    {
+      ostr << " DIRECTORY";
+    }
+    else if (attr_ & ATTR_ARCHIVE)
+    {
+      ostr << " ARCHIVE";
+    }
+  }
+}
+
 void Entry::load_content(Input& in, unsigned int offset)
 {
   char* p = in.get_buffer_at(fs_->get_sec_per_clus_()
@@ -142,6 +198,7 @@ void Entry::load_content(Input& in, unsigned int offset)
 std::ostream& operator<<(std::ostream& ostr, Entry& e)
 {
   ostr << "Short filename: [" << e.short_filename_ << "]"
+       << " - Extension: [" << e.extension_ << "]"
        << " - Size: " << e.file_size_
        << " - First cluster: " << e.fst_clus_ << std::endl
        << "  Created: ";
@@ -159,10 +216,15 @@ std::ostream& operator<<(std::ostream& ostr, Entry& e)
   ostr << " - Last opened: ";
   e.print_last_access_date(ostr);
 
-  ostr << std::endl
-       << "--------File content--------" << std::endl
-       << e.content_ << std::endl
-       << "--------END--------";
+  e.print_attribute(ostr);
+
+  if (!e.is_directory())
+  {
+    ostr << std::endl
+         << "--------File content--------" << std::endl
+         << e.content_ << std::endl
+         << "--------END--------";
+  }
 
   return ostr;
 }
