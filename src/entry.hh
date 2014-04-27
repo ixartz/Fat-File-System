@@ -169,7 +169,8 @@ private:
   unsigned char file_size_array_[4];
   unsigned int file_size_ = 0;
 
-  char content_[512];
+  char buffer_[512];
+  std::string content_;
 
   friend std::ostream& operator<<(std::ostream& ostr, Entry& e);
 };

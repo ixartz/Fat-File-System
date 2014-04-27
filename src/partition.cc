@@ -66,7 +66,7 @@ void Partition::list_root(Input& in)
 
     char* p = in.get_buffer_at(offset, fs->get_nb_Byte_sector());
 
-    Entry e(fs, p + 3 * 32);
+    Entry e(fs, p + 12 * 32);
     e.load_content(in, offset);
 
     std::cout << e << std::endl;
