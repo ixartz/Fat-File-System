@@ -16,6 +16,11 @@ Input::~Input()
   file_.close();
 }
 
+void Input::move_at(unsigned int location, unsigned int cluster_size)
+{
+  file_.seekg(cluster_size * location);
+}
+
 char* Input::get_next_buffer()
 {
   file_.read(buffer_, SizeOfArray(buffer_));
@@ -24,6 +29,6 @@ char* Input::get_next_buffer()
 
 char* Input::get_buffer_at(unsigned int location, unsigned int cluster_size)
 {
-  file_.seekg(cluster_size * location);
+  move_at(location, cluster_size);
   return get_next_buffer();
 }

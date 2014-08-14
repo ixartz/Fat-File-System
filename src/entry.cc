@@ -192,8 +192,7 @@ void Entry::load_content(Input& in, unsigned int offset)
                              * (fst_clus_ - fs_->get_root_clus_()) + offset,
                              fs_->get_nb_Byte_sector());
 
-  memcpy(buffer_, p, SizeOfArray(buffer_));
-  content_.append(buffer_, SizeOfArray(buffer_));
+  content_.append(p, Input::kbuffer_size);
 }
 
 std::ostream& operator<<(std::ostream& ostr, Entry& e)

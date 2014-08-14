@@ -2,6 +2,7 @@
 # define FAT_HH
 
 # include <string.h>
+# include "input.hh"
 # include "tool-array.hh"
 
 /**
@@ -12,11 +13,18 @@ class Fat
 public:
   /// Constructor.
   Fat(char* p);
+  /// Destructor.
+  ~Fat();
 
   /**
    * \brief Print Fat32 information.
    */
   void print();
+
+  /**
+   * \brief Load Fat structure.
+   */
+  void load_fat_structure(Input& in, unsigned int LBA_offset);
 
   /// Return number of Byte per sector
   unsigned int get_nb_Byte_sector();
@@ -73,6 +81,8 @@ private:
   unsigned char vol_id_[4];
   char vol_lab_[12];
   char fil_sys_type_[9];
+
+  unsigned long* cluster_chain_ = NULL;
 };
 
 #endif /* !FAT_HH */

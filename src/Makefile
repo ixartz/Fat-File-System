@@ -1,5 +1,5 @@
-CC = g++
-CXXFLAGS = -W -Wall -Wextra -Werror -pedantic -std=c++11 -O0 -g -ggdb
+CC = clang++
+CXXFLAGS = -W -Wall -Wextra -pedantic -std=c++11 -O0 -g -ggdb
 INCLUDE =
 LIBS =
 

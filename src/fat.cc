@@ -59,6 +59,12 @@ Fat::Fat(char* p)
   }
 }
 
+Fat::~Fat()
+{
+  if (cluster_chain_)
+    delete[] cluster_chain_;
+}
+
 void Fat::print()
 {
   std::cout << "Fat32 partition" << std::endl;
@@ -129,6 +135,31 @@ void Fat::print()
             << vol_lab_ << "]" << std::endl;
   std::cout << "File system type (informational only): ["
             << fil_sys_type_ << "]" << std::endl;
+}
+
+void Fat::load_fat_structure(Input& in, unsigned int LBA_offset)
+{
+  unsigned char* p;
+  unsigned long cluster;
+  unsigned int nb_cluster_chain_per_sector = nb_Byte_sector_ / 4;
+
+  cluster_chain_ = new unsigned long[get_fatz32() * nb_cluster_chain_per_sector];
+  in.move_at(LBA_offset + get_rsvd_sec_cnt());
+
+  for (unsigned int j = 0; j < get_fatz32(); ++j)
+  {
+    p = (unsigned char*) in.get_next_buffer();
+
+    for (unsigned int i = 0; i < nb_cluster_chain_per_sector; ++i)
+    {
+      cluster = 0;
+
+      for (int k = 3; k >= 0; --k)
+        cluster = (cluster << 8) | p[i * 4 + k];
+
+      cluster_chain_[j * nb_cluster_chain_per_sector + i] = cluster;
+    }
+  }
 }
 
 unsigned int Fat::get_nb_Byte_sector()
