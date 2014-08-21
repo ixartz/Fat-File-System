@@ -26,11 +26,16 @@ public:
    */
   void load_fat_structure(Input& in, unsigned int LBA_offset);
 
+  /**
+   * \brief Get next cluster according to the cluster chain.
+   */
+  unsigned int get_next_cluster(unsigned int pos);
+
   /// Return number of Byte per sector
   unsigned int get_nb_Byte_sector();
 
   /// Return number of sector per cluster
-  unsigned char get_sec_per_clus_();
+  unsigned char get_sec_per_clus();
 
   /// Return number of reserved sector
   unsigned int get_rsvd_sec_cnt();
@@ -39,7 +44,7 @@ public:
   unsigned int get_fatz32();
 
   /// Return cluster number of root directory.
-  unsigned int get_root_clus_();
+  unsigned int get_root_clus();
 
 private:
   /* BPB structure */

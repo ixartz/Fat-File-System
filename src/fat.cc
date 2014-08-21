@@ -162,12 +162,17 @@ void Fat::load_fat_structure(Input& in, unsigned int LBA_offset)
   }
 }
 
+unsigned int Fat::get_next_cluster(unsigned int pos)
+{
+  return cluster_chain_[pos];
+}
+
 unsigned int Fat::get_nb_Byte_sector()
 {
   return nb_Byte_sector_;
 }
 
-unsigned char Fat::get_sec_per_clus_()
+unsigned char Fat::get_sec_per_clus()
 {
   return sec_per_clus_;
 }
@@ -182,7 +187,7 @@ unsigned int Fat::get_fatz32()
   return fatz32_;
 }
 
-unsigned int Fat::get_root_clus_()
+unsigned int Fat::get_root_clus()
 {
   return root_clus_;
 }

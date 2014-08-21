@@ -188,11 +188,23 @@ void Entry::print_attribute(std::ostream& ostr)
 
 void Entry::load_content(Input& in, unsigned int offset)
 {
-  char* p = in.get_buffer_at(fs_->get_sec_per_clus_()
-                             * (fst_clus_ - fs_->get_root_clus_()) + offset,
-                             fs_->get_nb_Byte_sector());
+  unsigned int c = fst_clus_;
+  char* p;
 
-  content_.append(p, Input::kbuffer_size);
+  do
+  {
+    in.move_at(fs_->get_sec_per_clus()
+               * (c - fs_->get_root_clus()) + offset);
+
+    for (unsigned char i = 0; i < fs_->get_sec_per_clus(); ++i)
+    {
+      p = in.get_next_buffer();
+
+      content_.append(p, Input::kbuffer_size);
+    }
+
+    c = fs_->get_next_cluster(c);
+  } while (c != 0xFFFFFFF);
 }
 
 std::ostream& operator<<(std::ostream& ostr, Entry& e)

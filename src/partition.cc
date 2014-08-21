@@ -67,7 +67,7 @@ void Partition::list_root(Input& in)
                         + fs->get_rsvd_sec_cnt()
                         + fs->get_fatz32() * 2;
 
-    char* p = in.get_buffer_at(offset, fs->get_nb_Byte_sector());
+    char* p = in.get_buffer_at(offset);
 
     Entry e(fs, p + 12 * 32);
     e.load_content(in, offset);
