@@ -63,10 +63,11 @@ void Partition::list_root(Input& in)
 {
   if (fs)
   {
-    unsigned int offset = get_LBA_offset()
-                        + fs->get_rsvd_sec_cnt()
-                        + fs->get_fatz32() * 2;
+    unsigned int init_offset = get_LBA_offset()
+                             + fs->get_rsvd_sec_cnt()
+                             + fs->get_fatz32() * 2;
 
+    unsigned int offset = init_offset;
     char* p;
     p = in.get_buffer_at(offset);
 
@@ -75,7 +76,7 @@ void Partition::list_root(Input& in)
       Entry e(fs, p + i * 32);
 
       if (!e.is_directory() && !e.has_long_name() && !e.is_deleted())
-        e.load_content(in, offset);
+        e.load_content(in, init_offset);
 
       std::cout << e << std::endl;
 

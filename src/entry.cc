@@ -230,11 +230,13 @@ std::ostream& operator<<(std::ostream& ostr, Entry& e)
   {
     if (e.is_last_long_name())
     {
-      ostr << "Order: " << promote_int(e.last_seq_long_name());
-
       if (e.is_deleted())
       {
-        ostr << " - Entry deleted";
+        ostr << "Entry deleted";
+      }
+      else
+      {
+        ostr << "Order: " << promote_int(e.last_seq_long_name());
       }
     }
     else
