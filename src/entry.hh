@@ -85,9 +85,24 @@ public:
                                   unsigned char second);
 
   /**
-   * \brief Indicates whether the entry has a long name or not
+   * \brief Indicates whether the entry is a long name or not
    */
   bool has_long_name();
+
+  /**
+   * \brief Indicates whether the entry which is a long name is the last
+   */
+  bool is_last_long_name();
+
+  /**
+   * \brief Calculate the last long name
+   */
+  unsigned char last_seq_long_name();
+
+  /**
+   * \brief Indicates whether the entry is deleted or not
+   */
+  bool is_deleted();
 
   /**
    * \brief Indicates whether the entry is a directory or not.
@@ -138,6 +153,7 @@ private:
   Fat* fs_;
 
   char short_filename_[9];
+  unsigned char first_byte_;
   char extension_[4];
   unsigned char attr_array_[1];
   unsigned char attr_;

@@ -4,6 +4,8 @@ Entry::Entry(Fat* fs, char* p)
   : fs_(fs)
 {
   read_string(short_filename_, p);
+  first_byte_ = short_filename_[0];
+
   read_string(extension_, p + 8);
 
   memcpy(attr_array_, p + 11, SizeOfArray(attr_array_));
@@ -111,6 +113,21 @@ bool Entry::has_long_name()
                    | ATTR_ARCHIVE)) == ATTR_LONG_NAME;
 }
 
+bool Entry::is_last_long_name()
+{
+  return first_byte_ & 0x40;
+}
+
+unsigned char Entry::last_seq_long_name()
+{
+  return first_byte_ & 0x0F;
+}
+
+bool Entry::is_deleted()
+{
+  return first_byte_ == 0xE5;
+}
+
 bool Entry::is_directory()
 {
   return attr_ & (ATTR_DIRECTORY | ATTR_VOLUME_ID);
@@ -209,33 +226,50 @@ void Entry::load_content(Input& in, unsigned int offset)
 
 std::ostream& operator<<(std::ostream& ostr, Entry& e)
 {
-  ostr << "Short filename: [" << e.short_filename_ << "]"
-       << " - Extension: [" << e.extension_ << "]"
-       << " - Size: " << e.file_size_
-       << " - First cluster: " << e.fst_clus_ << std::endl
-       << "  Created: ";
-  e.print_creation_date(ostr);
-
-  ostr << " ";
-  e.print_creation_time(ostr);
-
-  ostr << " - Modified: ";
-  e.print_write_date(ostr);
-
-  ostr << " ";
-  e.print_write_time(ostr);
-
-  ostr << " - Last opened: ";
-  e.print_last_access_date(ostr);
-
-  e.print_attribute(ostr);
-
-  if (!e.is_directory())
+  if (e.has_long_name())
   {
-    ostr << std::endl
-         << "--------File content--------" << std::endl
-         << e.content_ << std::endl
-         << "--------END--------";
+    if (e.is_last_long_name())
+    {
+      ostr << "Order: " << promote_int(e.last_seq_long_name());
+
+      if (e.is_deleted())
+      {
+        ostr << " - Entry deleted";
+      }
+    }
+    else
+      ostr << "Order: " << promote_int(e.first_byte_);
+  }
+  else
+  {
+    ostr << "Short filename: [" << e.short_filename_ << "]"
+         << " - Extension: [" << e.extension_ << "]"
+         << " - Size: " << e.file_size_
+         << " - First cluster: " << e.fst_clus_ << std::endl
+         << "  Created: ";
+    e.print_creation_date(ostr);
+
+    ostr << " ";
+    e.print_creation_time(ostr);
+
+    ostr << " - Modified: ";
+    e.print_write_date(ostr);
+
+    ostr << " ";
+    e.print_write_time(ostr);
+
+    ostr << " - Last opened: ";
+    e.print_last_access_date(ostr);
+
+    e.print_attribute(ostr);
+
+    if (!e.is_directory())
+    {
+      ostr << std::endl
+           << "--------File content--------" << std::endl
+           << e.content_ << std::endl
+           << "--------END--------";
+    }
   }
 
   return ostr;

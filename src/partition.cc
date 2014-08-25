@@ -67,12 +67,31 @@ void Partition::list_root(Input& in)
                         + fs->get_rsvd_sec_cnt()
                         + fs->get_fatz32() * 2;
 
-    char* p = in.get_buffer_at(offset);
+    char* p;
+    p = in.get_buffer_at(offset);
 
-    Entry e(fs, p + 12 * 32);
-    e.load_content(in, offset);
+    for (unsigned int i = 0; p[i * 32];)
+    {
+      Entry e(fs, p + i * 32);
 
-    std::cout << e << std::endl;
+      if (!e.is_directory() && !e.has_long_name() && !e.is_deleted())
+        e.load_content(in, offset);
+
+      std::cout << e << std::endl;
+
+      if (i == 15)
+      {
+        ++offset;
+        i = 0;
+      }
+      else
+      {
+        ++i;
+      }
+
+      // Reset the input
+      p = in.get_buffer_at(offset);
+    }
   }
 }
 
